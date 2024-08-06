@@ -3,3 +3,4 @@ cogs/__pycache__
 .DS_Store
 discord.log
 .env
+test.py

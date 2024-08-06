@@ -24,7 +24,7 @@ async def on_ready():
     await load_cogs()
     print(f'We have logged in as {bot.user}')
 
-@bot.command()
+@bot.command(hidden=True)
 @commands.is_owner()
 async def load(ctx, extension):
     try:
@@ -33,7 +33,7 @@ async def load(ctx, extension):
     except Exception as e:
         await ctx.send(f'Failed to load {extension} \n{type(e).__name__}: {e}')
 
-@bot.command()
+@bot.command(hidden=True)
 @commands.is_owner()
 async def unload(ctx, extension):
     try:
@@ -42,7 +42,7 @@ async def unload(ctx, extension):
     except Exception as e:
         await ctx.send(f'Failed to unload {extension} \n{type(e).__name__}: {e}')
 
-@bot.command()
+@bot.command(hidden=True)
 @commands.is_owner()
 async def reload(ctx, extension):
     try:
@@ -52,7 +52,7 @@ async def reload(ctx, extension):
     except Exception as e:
         await ctx.send(f'Failed to reload {extension} \n{type(e).__name__}: {e}')
 
-@bot.command()
+@bot.command(hidden=True)
 @commands.is_owner()
 async def reload_all(ctx):
     for filename in os.listdir(cog_directory):
