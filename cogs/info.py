@@ -5,7 +5,7 @@ class Info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(help='arcaea game info')
     async def info(self, ctx):
         await ctx.send('''
 "A harmony of Light awaits you in a lost world of musical Conflict."

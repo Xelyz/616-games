@@ -18,12 +18,12 @@ class Challenge(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(help='initiate a rock paper scissors challenge')
     async def challenge(self, ctx):
         view = SelectView()
         await ctx.send('Select to start a challenge', view=view)
     
-    @commands.command()
+    @commands.command(help='show the number of rock paper scissors games running')
     async def allgames(self, ctx):
         await ctx.send(len(self.games))
 
