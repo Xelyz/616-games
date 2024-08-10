@@ -7,7 +7,7 @@ import mysql.connector
 import re
 from dotenv import load_dotenv
 
-#next: manage the start of the game after clicking the colab or compete button.
+#next: change the players[] and currentPlayer in Hangman to store users instead of user_id
 
 load_dotenv()
 PWD = os.getenv('PASSWORD')
@@ -15,13 +15,14 @@ PWD = os.getenv('PASSWORD')
 conn = mysql.connector.connect(user='discordbot', password=PWD, host='localhost', database='arcaeaSongInfo')
 cursor = conn.cursor()
 
+games = {}
+
 def ToLowerCase(arg):
     return arg.lower()
 
 class Dev(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.games = {}
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, err):
@@ -38,7 +39,7 @@ class Dev(commands.Cog):
     @dplay.command(help='Start a game of Hangman')
     async def hangman(self, ctx):
         channel_id = ctx.channel.id
-        if channel_id not in self.games:
+        if channel_id not in games:
             embed = discord.Embed(
                 title="Hangman",
                 description="**Description**:\nGuess the song title by viewing letters\n\nChoose your mode:",
@@ -48,37 +49,38 @@ class Dev(commands.Cog):
             embed.add_field(name='Competitive Game', value='play hangman with 6 song title and compete for the highest score', inline=False)
             # self.games[channel_id] = game = Hangman()
             # await game.start(ctx)
-            view = ChooseGameModeView(ctx.channel, self)
+            view = ChooseGameModeView()
             msg = await ctx.send(embed=embed, view=view)
             view.msg = msg
         else:
             await ctx.send("A game is already running in this channel!")
 
-    @commands.command(help='List all available games')
-    async def dgames(self, ctx):
+    @commands.command(name='games', help='List all available games')
+    async def lsgames(self, ctx):
         await ctx.send('Available Games: Hangman')
 
     @commands.command(help='Ends the game in the channel')
     async def dend(self, ctx):
         channel_id = ctx.channel.id
-        if channel_id in self.games:
-            await ctx.send(f'{self.games[channel_id].name} in this channel ended...')
-            await self.games[channel_id].endGame(ctx.channel)
-            del self.games[channel_id]
+        if channel_id in games:
+            game = games[channel_id]
+            await ctx.send(f'{game.name} in this channel ended...')
+            await game.endGame()
+            del games[channel_id]
         else:
             await ctx.send('There are no games running in this channel...')
 
     @commands.command(help='Hangman game command. View a character')
     async def dview(self, ctx, s: ToLowerCase):
         channel_id = ctx.channel.id
-        if channel_id in self.games:
-            game = self.games[channel_id]
+        if channel_id in games:
+            game = games[channel_id]
 
             if not isinstance(game, Hangman):
                 await ctx.send(f'Invalid Command: {game.name} is running instead of Hangman...')
                 return
             
-            if not game.playing:
+            if game.waiting:
                 await ctx.send(f'Invalid Command: {game.name} is still waiting to start')
                 return
             
@@ -86,21 +88,32 @@ class Dev(commands.Cog):
             await game.currState(ctx, msg)
             if game.isOver() == -1:
                 await ctx.send('Game Over!')
-                await game.endGame(ctx.channel)
-                del self.games[channel_id]
+                await game.endGame()
+                del games[channel_id]
             elif game.isOver() == 1:
                 await ctx.send('Game Completed! Horray!')
-                await game.endGame(ctx.channel)
-                del self.games[channel_id]
+                await game.endGame()
+                del games[channel_id]
         else:
             await ctx.send('Hangman is not running. Perhaps you want to start a game?')
 
+    @commands.command(help='Start whatever game that is waiting for other players in this channel')
+    async def dstart(self, ctx):
+        channel_id = ctx.channel.id
+        if channel_id in games:
+            game = games[channel_id]
+
+            if game.waiting:
+                await ctx.reply(f"Game Start")
+                await game.start()
+                return
+            
+        await ctx.reply("There are no games to start!")
+
 class ChooseGameModeView(View):
-    def __init__(self, channel, cog):
+    def __init__(self):
         # Timeout set to 20 seconds
         super().__init__(timeout=20)
-        self.channel = channel
-        self.cog = cog
 
     async def on_timeout(self):
         if hasattr(self, 'msg'):
@@ -112,8 +125,9 @@ class ChooseGameModeView(View):
         for item in self.children:
             item.disabled = True
         await interaction.response.edit_message(view=self)
-        self.cog.games[interaction.channel_id] = game = Hangman()
-        await game.start(self.channel)
+        games[interaction.channel_id] = game = Hangman()
+        game.channel = interaction.channel
+        await game.start()
 
     @discord.ui.button(label="Compete", style=ButtonStyle.primary, custom_id="compete")
     async def compete(self, interaction, button):
@@ -121,6 +135,38 @@ class ChooseGameModeView(View):
         for item in self.children:
             item.disabled = True
         await interaction.response.edit_message(view=self)
+        games[interaction.channel_id] = game = Hangman()
+        game.channel = interaction.channel
+        game.mode = 2
+        game.players.append(interaction.user.id)
+        game.leader = interaction.user.id
+        game.waiting = True
+        view = JoinView(game)
+        await game.channel.send(f"{interaction.user.display_name} started a Hangman game!\nClick the button to Join\nuse **lowiro-start** to start game", view=view)
+
+class JoinView(View):
+    def __init__(self, game):
+        super().__init__()
+        self.game = game
+
+    async def on_timeout(self):
+        if self.game.waiting:
+            await self.game.channel.send(f"Game Start")
+            await self.game.start()
+
+    @discord.ui.button(label="Join", style=ButtonStyle.primary, custom_id="join")
+    async def join(self, interaction, button):
+        if self.game.waiting:
+            player_id = interaction.user.id
+            if player_id in self.game.players:
+                await interaction.response.send_message("You are already in the game!", ephemeral=True)
+                return
+            
+            self.game.players.append(player_id)
+            await interaction.response.send_message(f"Successfully joined game {self.game.name}!", ephemeral=True)
+            return
+            
+        await interaction.response.send_message("There are no games to join!", ephemeral=True)
 
 class Hangman():
     def __init__(self):
@@ -133,12 +179,15 @@ class Hangman():
         self.viewed = []
         self.completed = []
         self.players = []
+        self.leader = None
         self.life = 6
         self.dmg = 1
         self.mode = 1 # 1 if colab, 2 if compete
-        self.playing = False
+        self.waiting = False
+        self.currentPlayer = None
+        self.channel = None
 
-    async def start(self, channel):
+    async def start(self):
         if self.mode == 1: 
             n = 1
         else:
@@ -162,8 +211,8 @@ class Hangman():
             self.answer.append(title)
             self.state.append([None if char != ' ' else char for char in title])
             self.completed.append(False)
-        await self.currState(channel, 'Game Start!\nUse lowiro-view <character> to play\n')
-        self.playing = True
+        await self.currState('Game Start!\nUse lowiro-view <character> to play\nUse lowiro-viewall <title> if you know the whole title\n')
+        self.waiting = False
 
     def isOver(self):
         if self.life <= 0:
@@ -172,13 +221,16 @@ class Hangman():
             return 1
         return 0
 
-    async def endGame(self, channel):
+    async def endGame(self):
+        if self.waiting:
+            return
+        
         msg = ["Reveal answer:"]
         for i, song in enumerate(self.answer, 1):
             msg.append(f'{i}: {song}')
-        await channel.send('\n'.join(msg))
+        await self.channel.send('\n'.join(msg))
 
-    async def currState(self, channel, note='Current Game:\n'):
+    async def currState(self, note='Current Game:\n'):
         msg = [note]
         msg.append(f'Viewed: {','.join(self.viewed)}')
         for i, song in enumerate(self.state, 1):
@@ -186,14 +238,20 @@ class Hangman():
                 msg.append(f'{i}: ~~{''.join(song)}~~')
             else:
                 msg.append(f'{i}: {''.join('\\*' if c == None else c for c in song)}')
-        msg.append(f'Life: {self.life}')
-        await channel.send('\n'.join(msg))
+
+        if self.mode == 1:
+            msg.append(f'Life: {self.life}')
+        
+        await self.channel.send('\n'.join(msg))
 
     def view(self, s, user):
         if not len(s) == 1:
             return 'The Argument MUST Be A Single Character\n'
         if s in self.viewed:
             return 'Character Already Viewed\n'
+        if self.mode == 2 and self.currentPlayer != user.id:
+            return 'It is not your turn\n'
+        
         self.viewed.append(s)
         dmg = self.dmg
         for i, song in enumerate(self.answer):
@@ -206,8 +264,15 @@ class Hangman():
                     if None not in self.state[i]:
                         self.completed[i] = True
                     
-        self.life -= dmg
-        return f'{user.display_name} viewed {s}\n'
+        if self.mode == 1:
+            self.life -= dmg
+            msg = 'Safe\n' if dmg == 0 else 'Miss!\n'
+
+        if self.mode == 2:
+            self.currentPlayer = self.next()
+            msg = f"It's your turn: {self.currentPlayer}"
+        
+        return f'{user.display_name} viewed {s}\n' + msg
 
 async def setup(bot):
     await bot.add_cog(Dev(bot))
