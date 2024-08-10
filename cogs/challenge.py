@@ -4,13 +4,13 @@ from discord.ext import commands
 from discord import ButtonStyle, SelectOption
 from discord.ui import View, Select
 
-OPTIONS = ('Rock', 'Paper', 'Scissors', 'Tsunagite', 'Derakkuma')
+OPTIONS = ('Rock', 'Paper', 'Scissors', 'Hikari', 'Tairitsu')
 RESULTS = [
-    [0, -1, 1, -1, 1],
+    [0, -1, 1, 1, -1],
     [1, 0, -1, 1, -1],
     [-1, 1, 0, -1, 1],
-    [1, -1, 1, 0, -1],
-    [-1, 1, -1, 1, 0],
+    [-1, -1, 1, 0, 1],
+    [1, 1, -1, -1, 0],
 ]
 games = {}
 
@@ -22,11 +22,6 @@ class Challenge(commands.Cog):
     async def challenge(self, ctx):
         view = SelectView()
         await ctx.send('Select to start a challenge', view=view)
-    
-    @commands.command(help='show the number of rock paper scissors games running')
-    async def allgames(self, ctx):
-        await ctx.send(len(self.games))
-
 
 def battle(object1, object2):
     a = OPTIONS.index(object1)
