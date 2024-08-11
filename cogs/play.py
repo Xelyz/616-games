@@ -80,12 +80,16 @@ class Play(commands.Cog):
             
             msg = game.view(s, ctx.author)
             await game.currState(msg)
+
+            if game.mode == 2:
+                await game.currScore()
+
             if game.isOver() == -1:
                 await ctx.send('Game Over!')
                 await game.endGame()
                 del games[channel_id]
             elif game.isOver() == 1:
-                await ctx.send('Game Completed! Horray!')
+                await ctx.send('Game Completed!')
                 del games[channel_id]
         else:
             await ctx.send('Hangman is not running. Perhaps you want to start a game?')
@@ -106,6 +110,10 @@ class Play(commands.Cog):
             
             msg = game.viewall(s, ctx.author)
             await game.currState(msg)
+            
+            if game.mode == 2:
+                await game.currScore()
+            
             if game.isOver() == -1:
                 await ctx.send('Game Over!')
                 await game.endGame()
@@ -268,6 +276,13 @@ class Hangman():
 
         if self.mode == 1:
             msg.append(f'Life: {self.life}')
+        
+        await self.channel.send('\n'.join(msg))
+
+    async def currScore(self, note='\nScores:'):
+        msg = [note]
+        for i in range(len(self.players)):
+            msg.append(f'{self.players[i]}: {self.scores[i]}')
         
         await self.channel.send('\n'.join(msg))
 
