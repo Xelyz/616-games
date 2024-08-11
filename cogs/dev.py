@@ -22,7 +22,7 @@ games = {}
 def ToLowerCase(arg):
     return arg.lower()
 
-class Play(commands.Cog):
+class Dev(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         connect()
@@ -340,4 +340,4 @@ class Hangman():
         return f'{user.display_name} viewed {s}\n' + msg
 
 async def setup(bot):
-    await bot.add_cog(Play(bot))
+    await bot.add_cog(Dev(bot))
