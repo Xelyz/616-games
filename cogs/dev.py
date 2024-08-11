@@ -162,6 +162,7 @@ class ChooseGameModeView(View):
         game.channel = interaction.channel
         game.mode = 2
         game.players.append(interaction.user)
+        game.scores.append(0)
         game.waiting = True
         view = JoinView(game)
         await game.channel.send(f"{interaction.user.display_name} started a Hangman game!\nClick the button to Join\nuse **lowiro-start** to start game\nAuto start after 2 minutes", view=view)
@@ -184,6 +185,7 @@ class JoinView(View):
                 return
             
             self.game.players.append(interaction.user)
+            self.game.scores.append(0)
             await interaction.response.send_message(f"Successfully joined game {self.game.name}!", ephemeral=True)
             return
             
@@ -200,6 +202,7 @@ class Hangman():
         self.viewed = []
         self.completed = []
         self.players = []
+        self.scores = []
         self.leader = None
         self.life = 6
         self.dmg = 1
@@ -278,14 +281,18 @@ class Hangman():
         
         self.viewed.append(s)
         dmg = self.dmg
+        score = 0
+
         for i, song in enumerate(self.answer):
             if self.completed[i]:
                 continue
             for j, char in enumerate(song):
                 if char.lower() == s and self.state[i][j] == None:
                     self.state[i][j] = char
+                    score += 1
                     dmg = 0
                     if None not in self.state[i]:
+                        score -= 5
                         self.completed[i] = True
                     
         if self.mode == 1:
@@ -293,6 +300,7 @@ class Hangman():
             msg = 'Safe!\n' if dmg == 0 else 'Miss!\n'
 
         if self.mode == 2:
+            self.scores[self.currentPlayer] += score
             self.currentPlayer += 1
             self.currentPlayer %= len(self.players)
             msg = f"It's your turn: {self.players[self.currentPlayer].display_name}\n"
@@ -304,19 +312,23 @@ class Hangman():
             return 'It is not your turn\n'
         
         dmg = self.dmg
+        score = 0
+
         for i, song in enumerate(self.answer):
             if self.completed[i]:
                 continue
             if song.lower() == s:
+                score += self.state[i].count(None) * 2
                 self.state[i] = song
                 dmg = 0
                 self.completed[i] = True
-                    
+
         if self.mode == 1:
             self.life -= dmg
             msg = 'Safe!\n' if dmg == 0 else 'Miss!\n'
 
         if self.mode == 2:
+            self.scores[self.currentPlayer] += score
             self.currentPlayer += 1
             self.currentPlayer %= len(self.players)
             msg = f"It's your turn: {self.players[self.currentPlayer].display_name}\n"
