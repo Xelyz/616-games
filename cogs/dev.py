@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ui import View
 from discord import ButtonStyle
-from ..query import Query
+from .utils.query import Query
 
 #next: scoring
 
