@@ -2,22 +2,13 @@ import discord
 from discord.ext import commands
 from discord.ui import View
 from discord import ButtonStyle
-import os
-import mysql.connector
-from mysql.connector import Error
-from dotenv import load_dotenv
+from ..query import Query
 
 #next: scoring
 
-load_dotenv()
-PWD = os.getenv('PASSWORD')
-
-def connect():
-    # Establish connection
-    global conn
-    conn = mysql.connector.connect(user='discordbot', password=PWD, host='localhost', database='arcaeaSongInfo')
-
 games = {}
+
+cursor = Query()
 
 def ToLowerCase(arg):
     return arg.lower()
@@ -25,7 +16,6 @@ def ToLowerCase(arg):
 class Dev(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        connect()
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, err):
@@ -49,7 +39,7 @@ class Dev(commands.Cog):
                 color=discord.Color.blue()  # You can change the color as needed
             )
             embed.add_field(name='Colaborative Game', value='play hangman with one song title and 6 life', inline=False)
-            embed.add_field(name='Competitive Game', value='play hangman with 6 song title and compete for the highest score', inline=False)
+            embed.add_field(name='Competitive Game', value='play hangman with 6 song title and compete for the highest score **under dev**', inline=False)
             # self.games[channel_id] = game = Hangman()
             # await game.start(ctx)
             games[channel_id] = Hangman()
@@ -68,9 +58,9 @@ class Dev(commands.Cog):
         channel_id = ctx.channel.id
         if channel_id in games:
             game = games[channel_id]
+            del games[channel_id]
             await ctx.send(f'{game.name} in this channel ended...')
             await game.endGame()
-            del games[channel_id]
         else:
             await ctx.send('There are no games running in this channel...')
 
@@ -101,7 +91,7 @@ class Dev(commands.Cog):
             await ctx.send('Hangman is not running. Perhaps you want to start a game?')
 
     @commands.command(help='Hangman game command. View a whole title')
-    async def dviewall(self, ctx, s: ToLowerCase):
+    async def dviewall(self, ctx, *, s: ToLowerCase):
         channel_id = ctx.channel.id
         if channel_id in games:
             game = games[channel_id]
@@ -224,11 +214,7 @@ class Hangman():
         else:
             n = 6
         
-        if conn is None or not conn.is_connected():
-            connect()
-        cursor = conn.cursor()
-
-        cursor.execute("""
+        result = cursor.execute("""
         SELECT song_id, title
         FROM (
             SELECT s.song_id, MAX(lt.title) AS title
@@ -241,8 +227,6 @@ class Hangman():
         ORDER BY RAND()
         LIMIT %s;
         """,(n,))
-        result = cursor.fetchall()
-        cursor.close()
         
         for song_id, title in result:
             self.songs.append(song_id)
