@@ -49,7 +49,7 @@ class Play(commands.Cog):
                 color=discord.Color.blue()  # You can change the color as needed
             )
             embed.add_field(name='Colaborative Game', value='play hangman with one song title and 6 life', inline=False)
-            embed.add_field(name='Competitive Game', value='play hangman with 6 song title and compete for the highest score', inline=False)
+            embed.add_field(name='Competitive Game', value='play hangman with 6 song title and compete for the highest score **under dev**', inline=False)
             # self.games[channel_id] = game = Hangman()
             # await game.start(ctx)
             games[channel_id] = Hangman()
@@ -101,7 +101,7 @@ class Play(commands.Cog):
             await ctx.send('Hangman is not running. Perhaps you want to start a game?')
 
     @commands.command(help='Hangman game command. View a whole title')
-    async def viewall(self, ctx, s: ToLowerCase):
+    async def viewall(self, ctx, *, s: ToLowerCase):
         channel_id = ctx.channel.id
         if channel_id in games:
             game = games[channel_id]
