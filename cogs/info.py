@@ -46,8 +46,8 @@ Challenging trials can be discovered through play, higher difficulties can be un
                 result = result[0]
                 song_id = result[0]
                 title = result[1]
-                url, artist, bpm, set_name, side, version = cursor.execute("""
-                SELECT url, artist, bpm, set_name, side, version
+                url, id, artist, bpm, set_name, side, version = cursor.execute("""
+                SELECT url, id, artist, bpm, set_name, side, version
                 FROM songs 
                 WHERE song_id = %s;
                 """,(song_id,))[0]
@@ -81,7 +81,7 @@ Challenging trials can be discovered through play, higher difficulties can be un
                         case 4:
                             cls = 'ETR'
 
-                    display.append(f'{cls}: {rating}')
+                    display.append(f'[{cls}](https://www.youtube.com/results?search_query=arcaea+{id}+{cls}): {rating}')
 
                 display = ' / '.join(display)
 
