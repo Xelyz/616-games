@@ -4,3 +4,4 @@ __pycache__
 discord.log
 .env
 test.py
+resources
