@@ -4,7 +4,7 @@ from discord.ui import View
 from discord import ButtonStyle
 from .utils.query import Query
 
-#next: scoring
+#next: 
 
 games = {}
 
@@ -39,10 +39,9 @@ class Play(commands.Cog):
                 color=discord.Color.blue()  # You can change the color as needed
             )
             embed.add_field(name='Colaborative Game', value='play hangman with one song title and 6 life', inline=False)
-            embed.add_field(name='Competitive Game', value='play hangman with 6 song title and compete for the highest score **under dev**', inline=False)
+            embed.add_field(name='Competitive Game', value='play hangman with 6 song title and compete for the highest score', inline=False)
             # self.games[channel_id] = game = Hangman()
             # await game.start(ctx)
-            games[channel_id] = Hangman()
             view = ChooseGameModeView(channel_id)
             msg = await ctx.send(embed=embed, view=view)
             view.msg = msg
@@ -110,7 +109,7 @@ class Play(commands.Cog):
             
             msg = game.viewall(s, ctx.author)
             await game.currState(msg)
-            
+
             if game.mode == 2:
                 await game.currScore()
             
@@ -131,6 +130,7 @@ class Play(commands.Cog):
             game = games[channel_id]
 
             if game.waiting:
+                await ctx.send(f'Players: {', '.join(player.display_name for player in game.players)}')
                 await game.start()
                 return
             
@@ -143,9 +143,10 @@ class ChooseGameModeView(View):
         self.channel_id = channel_id
 
     async def on_timeout(self):
-        game = games[self.channel_id]
-        if game.mode == 0:
-            del games[self.channel_id]
+        if self.channel_id in games:
+            game = games[self.channel_id]
+            if game.mode == 0:
+                del games[self.channel_id]
         if hasattr(self, 'msg'):
             await self.msg.edit(view=None)  # Update the message to show the disabled buttons
 
@@ -155,6 +156,9 @@ class ChooseGameModeView(View):
         for item in self.children:
             item.disabled = True
         await interaction.response.edit_message(view=self)
+
+        assert(interaction.channel_id not in games)
+        
         games[interaction.channel_id] = game = Hangman()
         game.channel = interaction.channel
         game.mode = 1
@@ -166,6 +170,9 @@ class ChooseGameModeView(View):
         for item in self.children:
             item.disabled = True
         await interaction.response.edit_message(view=self)
+
+        assert(interaction.channel_id not in games)
+        
         games[interaction.channel_id] = game = Hangman()
         game.channel = interaction.channel
         game.mode = 2
@@ -279,10 +286,10 @@ class Hangman():
         
         await self.channel.send('\n'.join(msg))
 
-    async def currScore(self, note='\nScores:'):
+    async def currScore(self, note='Scores:'):
         msg = [note]
         for i in range(len(self.players)):
-            msg.append(f'{self.players[i]}: {self.scores[i]}')
+            msg.append(f'{self.players[i].display_name}: {self.scores[i]}')
         
         await self.channel.send('\n'.join(msg))
 
