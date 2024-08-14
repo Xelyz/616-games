@@ -2,6 +2,7 @@ import json
 import mysql.connector
 import os
 from dotenv import load_dotenv
+import re
 
 load_dotenv()
 PWD = os.getenv('PASSWORD')
@@ -9,6 +10,15 @@ PWD = os.getenv('PASSWORD')
 
 conn = mysql.connector.connect(user='root', password=PWD, host='localhost', database='arcaeaSongInfo')
 cursor = conn.cursor()
+
+# with open('./cogs/utils/1.1.txt', 'r') as file:
+#     for line in file:
+#         id = re.search('Songs_(.*).jpg', line).group(1)
+#         cursor.execute('''
+# UPDATE songs
+# SET url = %s
+# WHERE id = %s;
+# ''', (line.strip(), id))
 
 # Load JSON data
 # with open('songList.json', 'r') as file:
@@ -98,6 +108,6 @@ cursor = conn.cursor()
 #         #     VALUES (%s, %s)
 #         # """, (song_info[0], song_id))
 
-# conn.commit()
-# cursor.close()
-# conn.close()
+conn.commit()
+cursor.close()
+conn.close()
