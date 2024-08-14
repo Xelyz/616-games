@@ -46,8 +46,8 @@ Challenging trials can be discovered through play, higher difficulties can be un
                 result = result[0]
                 song_id = result[0]
                 title = result[1]
-                id, artist, bpm, set_name, side, version = cursor.execute("""
-                SELECT id, artist, bpm, set_name, side, version
+                url, artist, bpm, set_name, side, version = cursor.execute("""
+                SELECT url, artist, bpm, set_name, side, version
                 FROM songs 
                 WHERE song_id = %s;
                 """,(song_id,))[0]
@@ -57,8 +57,6 @@ Challenging trials can be discovered through play, higher difficulties can be un
                 FROM difficulties 
                 WHERE song_id = %s;
                 """,(song_id,))
-
-                url = f'https://arcwiki.mcd.blue/images/thumb/8/8f/Songs_fairytale.jpg/150px-Songs_fairytale.jpg'
 
                 display = []
                 for rating_class, rating, refer_to in difficulties:
@@ -104,10 +102,10 @@ Challenging trials can be discovered through play, higher difficulties can be un
                 embed.add_field(name='Artist: ', value=artist, inline=True)
                 embed.add_field(name='BPM: ', value=bpm, inline=True)
                 embed.add_field(name='Version: ', value=version, inline=True)
-                embed.add_field(name='Side: ', value=side, inline=False )
+                embed.add_field(name='', value=f'**Side:** {side}', inline=False)
                 embed.add_field(name='Level', value=display, inline=False)
 
-                embed.set_image(url=url)
+                embed.set_thumbnail(url=url)
 
                 await ctx.send(embed=embed)
             else:
