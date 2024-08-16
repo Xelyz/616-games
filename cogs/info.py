@@ -27,19 +27,14 @@ class ConfirmView(View):
 
     @discord.ui.button(label="Confirm", style=ButtonStyle.primary, custom_id="confirm")
     async def confirm(self, interaction, button):
-        await self.action(*self.params)
+        self.action(*self.params)
+        await interaction.response.edit_message(view=None)
+        await interaction.channel.send('Alias added successfully!')
 
 class Info(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx, err):
-        if ctx.cog is None or ctx.cog.qualified_name != self.__class__.__name__:
-            return
-        await ctx.send(err)
-        raise err
-    
     @commands.Cog.listener()
     async def on_command_error(self, ctx, err):
         if ctx.cog is None or ctx.cog.qualified_name != self.__class__.__name__:
@@ -63,9 +58,22 @@ class Info(commands.Cog):
             song_id = result[0]
             title = result[1]
 
-            view = ConfirmView(insert, song_id, alias)
-            msg = await ctx.send(f"Adding alias **{alias}** to song **{title}**.\n*Timeout in 5 seconds*", view=view)
-            view.msg = msg
+            result = cursor.execute('''
+SELECT title
+FROM alias
+WHERE LOWER(title) = %s
+UNION   
+SELECT title
+FROM localized_titles
+WHERE LOWER(title) = %s
+''', (alias.lower(), alias.lower()))
+            
+            if result:
+                await ctx.send("Alias already added")
+            else:
+                view = ConfirmView(insert, song_id, alias)
+                msg = await ctx.send(f"Adding alias **{alias}** to song **{title}**.\n*Timeout in 5 seconds*", view=view)
+                view.msg = msg
         else:
             await ctx.send("Cannot find the song")
 
