@@ -17,8 +17,7 @@ VALUES (%s, %s)
 ''', (song_id, alias))
 
 class ConfirmView(View):
-    def __init__(self, msg, action, *params):
-        self.msg = msg
+    def __init__(self, action, *params):
         self.action = action
         self.params = params
         super().__init__(timeout=5)
@@ -48,7 +47,7 @@ class Info(commands.Cog):
         await ctx.send(err)
         raise err
     
-    @commands.command(name='add-alias', help='lowiro-add-alias "<song>" "<alias>" add alias to a song for search.')
+    @commands.command(name='add-alias', help='lowiro-add-alias "<song>" "<alias>" add alias to a song.\nsong and alias should be in double quote ""')
     async def add_alias(self, ctx, song: ToLowerCase, alias):
         result = cursor.execute("""
             SELECT t.song_id, t.title, 
@@ -64,7 +63,7 @@ class Info(commands.Cog):
             song_id = result[0]
             title = result[1]
 
-            view = ConfirmView(ctx.message, insert, song_id, alias)
+            view = ConfirmView(insert, song_id, alias)
             msg = await ctx.send(f"Adding alias **{alias}** to song **{title}**.\n*Timeout in 5 seconds*", view=view)
             view.msg = msg
         else:
