@@ -21,6 +21,8 @@ class Play(commands.Cog):
     async def on_command_error(self, ctx, err):
         if ctx.cog is None or ctx.cog.qualified_name != self.__class__.__name__:
             return
+        if ctx.channel.id in games:
+            del games[ctx.channel.id]
         await ctx.send(err)
         raise err
 
@@ -36,12 +38,11 @@ class Play(commands.Cog):
             embed = discord.Embed(
                 title="Hangman",
                 description="**Description**:\nGuess the song title by viewing letters\n\nChoose your mode:",
-                color=discord.Color.blue()  # You can change the color as needed
+                color=discord.Color.blue()
             )
             embed.add_field(name='Colaborative Game', value='play hangman with one song title and 6 life', inline=False)
             embed.add_field(name='Competitive Game', value='play hangman with 6 song title and compete for the highest score', inline=False)
-            # self.games[channel_id] = game = Hangman()
-            # await game.start(ctx)
+
             view = ChooseGameModeView(channel_id)
             msg = await ctx.send(embed=embed, view=view)
             view.msg = msg
@@ -130,10 +131,19 @@ class Play(commands.Cog):
             game = games[channel_id]
 
             if game.waiting:
+                await game.waiting.msg.edit(view=None)
                 await ctx.send(f'Players: {', '.join(player.display_name for player in game.players)}')
-                await game.start()
+                view = DifficultyView(channel_id)
+                msg = await ctx.send('''
+Choose the difficulty:
+**Past:** only Alphabets
+**Present:** Alphabets, numbers and .
+**Future:** Include all special characters
+**Beyond**: Include Japanese Characters and Kanji!
+''', view=view)
+                view.msg = msg
                 return
-            
+
         await ctx.reply("There are no games to start!")
 
 class ChooseGameModeView(View):
@@ -144,43 +154,92 @@ class ChooseGameModeView(View):
 
     async def on_timeout(self):
         if self.channel_id in games:
-            game = games[self.channel_id]
-            if game.mode == 0:
+            if games[self.channel_id].waiting:
                 del games[self.channel_id]
         if hasattr(self, 'msg'):
-            await self.msg.edit(view=None)  # Update the message to show the disabled buttons
+            await self.msg.edit(view=None)
 
-    @discord.ui.button(label="Colab", style=ButtonStyle.primary, custom_id="colab")
+    @discord.ui.button(label="Colab", style=ButtonStyle.primary, custom_id="Colab")
     async def colab(self, interaction, button):
-        # Optionally disable the button immediately after it's pressed
-        for item in self.children:
-            item.disabled = True
-        await interaction.response.edit_message(view=self)
+        await interaction.response.edit_message(view=None)
 
-        assert(interaction.channel_id not in games)
-        
-        games[interaction.channel_id] = game = Hangman()
-        game.channel = interaction.channel
-        game.mode = 1
-        await game.start()
+        if interaction.channel_id not in games:
+            games[interaction.channel_id] = game = Hangman()
+            game.channel = interaction.channel
+            game.mode = 1
 
-    @discord.ui.button(label="Compete", style=ButtonStyle.primary, custom_id="compete")
+            view = DifficultyView(interaction.channel_id)
+            msg = await interaction.channel.send('''
+Choose the difficulty:
+**Past:** only Alphabets
+**Present:** Alphabets, numbers and .
+**Future:** Include all special characters
+**Beyond**: Include Japanese Characters and Kanji!
+''', view=view)
+            view.msg = msg
+
+    @discord.ui.button(label="Compete", style=ButtonStyle.primary, custom_id="Compete")
     async def compete(self, interaction, button):
         # Optionally disable the button immediately after it's pressed
         for item in self.children:
             item.disabled = True
         await interaction.response.edit_message(view=self)
 
-        assert(interaction.channel_id not in games)
-        
-        games[interaction.channel_id] = game = Hangman()
-        game.channel = interaction.channel
-        game.mode = 2
-        game.players.append(interaction.user)
-        game.scores.append(0)
-        game.waiting = True
-        view = JoinView(game)
-        await game.channel.send(f"{interaction.user.display_name} started a Hangman game!\nClick the button to Join\nuse **lowiro-start** to start game\nAuto start after 2 minutes", view=view)
+        if interaction.channel_id not in games:
+            games[interaction.channel_id] = game = Hangman()
+            game.channel = interaction.channel
+            game.mode = 2
+            game.players.append(interaction.user)
+            game.scores.append(0)
+            view = JoinView(game)
+            game.waiting = view
+            msg = await game.channel.send(f"{interaction.user.display_name} started a Hangman game!\nClick the button to Join\nuse **lowiro-start** to start game\nAuto start after 2 minutes", view=view)
+            view.msg = msg
+
+class DifficultyView(View):
+    def __init__(self, channel_id):
+        # Timeout set to 20 seconds
+        super().__init__(timeout=20)
+        self.channel_id = channel_id
+
+    async def on_timeout(self):
+        if self.channel_id in games:
+            if games[self.channel_id].waiting:
+                del games[self.channel_id]
+        if hasattr(self, 'msg'):
+            await self.msg.edit(view=None)
+
+    @discord.ui.button(label="Past", style=ButtonStyle.blurple, custom_id="pst")
+    async def pst(self, interaction, button):
+        if interaction.channel_id in games:
+            game = games[interaction.channel_id]
+            game.difficulty = 0
+            await game.start()
+        await interaction.response.edit_message(view=None)
+
+    @discord.ui.button(label="Present", style=ButtonStyle.green, custom_id="prs")
+    async def prs(self, interaction, button):
+        if interaction.channel_id in games:
+            game = games[interaction.channel_id]
+            game.difficulty = 1
+            await game.start()
+        await interaction.response.edit_message(view=None)
+
+    @discord.ui.button(label="Future", style=ButtonStyle.blurple, custom_id="ftr")
+    async def ftr(self, interaction, button):
+        if interaction.channel_id in games:
+            game = games[interaction.channel_id]
+            game.difficulty = 2
+            await game.start()
+        await interaction.response.edit_message(view=None)
+
+    @discord.ui.button(label="Beyond", style=ButtonStyle.red, custom_id="byd")
+    async def byd(self, interaction, button):
+        if interaction.channel_id in games:
+            game = games[interaction.channel_id]
+            game.difficulty = 3
+            await game.start()
+        await interaction.response.edit_message(view=None)
 
 class JoinView(View):
     def __init__(self, game):
@@ -188,6 +247,7 @@ class JoinView(View):
         self.game = game
 
     async def on_timeout(self):
+        await self.msg.edit(view=None)
         if self.game.waiting:
             await self.game.start()
 
@@ -222,7 +282,8 @@ class Hangman():
         self.life = 6
         self.dmg = 1
         self.mode = 0 # 1 if colab, 2 if compete
-        self.waiting = False
+        self.difficulty = 0
+        self.waiting = True
         self.currentPlayer = None # the index of self.players
         self.channel = None
 
@@ -231,17 +292,22 @@ class Hangman():
             n = 1
         else:
             n = 6
+
+        match self.difficulty:
+            case 0:
+                constraint = "title REGEXP '^[A-Za-z ]*$'"
+            case 1:
+                constraint = "title REGEXP '^[A-Za-z0-9. ]*$'"
+            case 2:
+                constraint = "lt.language = 'en'"
+            case 3:
+                constraint = "1 = 1"
         
-        result = cursor.execute("""
-        SELECT song_id, title
-        FROM (
-            SELECT s.song_id, MAX(lt.title) AS title
-            FROM songs s
-            JOIN localized_titles lt ON s.song_id = lt.song_id
-            GROUP BY s.song_id
-            HAVING COUNT(lt.title) = 1
-        ) AS subquery
-        WHERE title REGEXP '^[A-Za-z ]+$'
+        result = cursor.execute(f"""
+        SELECT s.song_id, lt.title AS title
+        FROM songs s
+        JOIN localized_titles lt ON s.song_id = lt.song_id
+        WHERE {constraint}
         ORDER BY RAND()
         LIMIT %s;
         """,(n,))
