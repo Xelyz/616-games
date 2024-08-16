@@ -21,24 +21,40 @@ cursor = conn.cursor()
 # ''', (line.strip(), id))
 
 # Load JSON data
-# with open('songList.json', 'r') as file:
-#     data = json.load(file)['songs']
+with open('chartConstant.json', 'r') as file:
+    data = json.load(file)
 
 # # Insert data into database
-# for song in data:
-#     # # Required fields
-#     # artist = song.get('artist')
-#     # bpm = song.get('bpm')
-#     # bpm_base = song.get('bpm_base')
-#     # set_name = song.get('set')
-#     # purchase = song.get('purchase')
-#     # audio_preview = song.get('audioPreview')
-#     # audio_preview_end = song.get('audioPreviewEnd')
-#     # bg = song.get('bg')
-#     # bg_inverse = song.get('bg_inverse')
-#     # side = song.get('side')
-#     # date = song.get('date')
-#     # version = song.get('version')
+for song, difficulties in data.items():
+    cursor.execute('''
+SELECT song_id
+FROM songs
+WHERE id = %s
+''', (song,))
+    
+    song_id = cursor.fetchone()[0]
+
+    for i, difficulty in enumerate(difficulties):
+        if not difficulty: continue
+        cursor.execute('''
+UPDATE difficulties
+SET chart_constant = %s
+WHERE rating_class = %s AND
+song_id = %s
+''', (difficulty['constant'], i, song_id))
+    # Required fields
+    # artist = song.get('artist')
+    # bpm = song.get('bpm')
+    # bpm_base = song.get('bpm_base')
+    # set_name = song.get('set')
+    # purchase = song.get('purchase')
+    # audio_preview = song.get('audioPreview')
+    # audio_preview_end = song.get('audioPreviewEnd')
+    # bg = song.get('bg')
+    # bg_inverse = song.get('bg_inverse')
+    # side = song.get('side')
+    # date = song.get('date')
+    # version = song.get('version')
 
 #     # # Optional fields
 #     # world_unlock = song.get('world_unlock', False)  # Check if the key exists
