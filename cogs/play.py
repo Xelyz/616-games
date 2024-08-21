@@ -135,7 +135,7 @@ class Play(commands.Cog):
 
             if game.waiting:
                 await game.waiting.msg.edit(view=None)
-                await ctx.send(f'Players: {', '.join(player.display_name for player in game.players)}')
+                await ctx.send(f"Players: {', '.join(player.display_name for player in game.players)}")
                 view = DifficultyView(channel_id)
                 msg = await ctx.send('''
 Choose the difficulty:
