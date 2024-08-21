@@ -305,15 +305,14 @@ class Hangman():
             n = 6
 
         titles = [(song['language'], song['title']) for song in songs.values()]
-        match self.difficulty:
-            case 0:
-                result = list(filter(lambda song: bool(re.match('^[A-Za-z ]*$', song[1])), titles))
-            case 1:
-                result = list(filter(lambda song: bool(re.match('^[A-Za-z0-9. ]*$', song[1])), titles))
-            case 2:
-                result = list(filter(lambda song: song[0] == 'en', titles))
-            case 3:
-                result = titles
+        if self.difficulty == 0:
+            result = list(filter(lambda song: bool(re.match('^[A-Za-z ]*$', song[1])), titles))
+        elif self.difficulty == 1:
+            result = list(filter(lambda song: bool(re.match('^[A-Za-z0-9. ]*$', song[1])), titles))
+        elif self.difficulty == 2:
+            result = list(filter(lambda song: song[0] == 'en', titles))
+        elif self.difficulty == 3:
+            result = titles
         
         random.shuffle(result)
         result = result[:n]
