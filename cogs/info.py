@@ -100,17 +100,16 @@ Challenging trials can be discovered through play, higher difficulties can be un
                     rating = diff.get('rating')
                     chart_constant = diff.get('chart_constant')
 
-                    match rating_class:
-                        case 0:
-                            cls = 'PST'
-                        case 1:
-                            cls = 'PRS'
-                        case 2:
-                            cls = 'FTR'
-                        case 3:
-                            cls = 'BYD'
-                        case 4:
-                            cls = 'ETR'
+                    if rating_class == 0:
+                        cls = 'PST'
+                    elif rating_class == 1:
+                        cls = 'PRS'
+                    elif rating_class == 2:
+                        cls = 'FTR'
+                    elif rating_class == 3:
+                        cls = 'BYD'
+                    elif rating_class == 4:
+                        cls = 'ETR'
                     
                     plus = '+' if chart_constant - int(chart_constant) >= 0.7 else ''
                     const = f' ({chart_constant})' if chart_constant >= 8.0 else ''
