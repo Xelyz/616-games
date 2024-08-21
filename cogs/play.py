@@ -2,13 +2,16 @@ import discord
 from discord.ext import commands
 from discord.ui import View
 from discord import ButtonStyle
-from .utils.query import Query
+from .utils.data import Data
+import random
+import re
 
 #next: 
 
 games = {}
 
-cursor = Query()
+data = Data()
+songs = data.songs
 
 def ToLowerCase(arg):
     return arg.lower()
@@ -151,10 +154,11 @@ class ChooseGameModeView(View):
         # Timeout set to 20 seconds
         super().__init__(timeout=20)
         self.channel_id = channel_id
+        self.expired = False
 
     async def on_timeout(self):
         if self.channel_id in games:
-            if games[self.channel_id].waiting:
+            if not self.expired:
                 del games[self.channel_id]
         if hasattr(self, 'msg'):
             await self.msg.edit(view=None)
@@ -177,6 +181,7 @@ Choose the difficulty:
 **Beyond**: Include Japanese Characters and Kanji!
 ''', view=view)
             view.msg = msg
+        self.expired = True
 
     @discord.ui.button(label="Compete", style=ButtonStyle.primary, custom_id="Compete")
     async def compete(self, interaction, button):
@@ -195,16 +200,18 @@ Choose the difficulty:
             game.waiting = view
             msg = await game.channel.send(f"{interaction.user.display_name} started a Hangman game!\nClick the button to Join\nuse **lowiro-start** to start game\nAuto start after 2 minutes", view=view)
             view.msg = msg
+        self.expired = True
 
 class DifficultyView(View):
     def __init__(self, channel_id):
         # Timeout set to 20 seconds
         super().__init__(timeout=20)
         self.channel_id = channel_id
+        self.expired = False
 
     async def on_timeout(self):
         if self.channel_id in games:
-            if games[self.channel_id].waiting:
+            if not self.expired:
                 del games[self.channel_id]
         if hasattr(self, 'msg'):
             await self.msg.edit(view=None)
@@ -216,6 +223,7 @@ class DifficultyView(View):
             game.difficulty = 0
             await game.start()
         await interaction.response.edit_message(view=None)
+        self.expired = True
 
     @discord.ui.button(label="Present", style=ButtonStyle.green, custom_id="prs")
     async def prs(self, interaction, button):
@@ -224,6 +232,7 @@ class DifficultyView(View):
             game.difficulty = 1
             await game.start()
         await interaction.response.edit_message(view=None)
+        self.expired = True
 
     @discord.ui.button(label="Future", style=ButtonStyle.blurple, custom_id="ftr")
     async def ftr(self, interaction, button):
@@ -232,6 +241,7 @@ class DifficultyView(View):
             game.difficulty = 2
             await game.start()
         await interaction.response.edit_message(view=None)
+        self.expired = True
 
     @discord.ui.button(label="Beyond", style=ButtonStyle.red, custom_id="byd")
     async def byd(self, interaction, button):
@@ -240,6 +250,7 @@ class DifficultyView(View):
             game.difficulty = 3
             await game.start()
         await interaction.response.edit_message(view=None)
+        self.expired = True
 
 class JoinView(View):
     def __init__(self, game):
@@ -293,24 +304,19 @@ class Hangman():
         else:
             n = 6
 
+        titles = [(song['language'], song['title']) for song in songs.values()]
         match self.difficulty:
             case 0:
-                constraint = "title REGEXP '^[A-Za-z ]*$'"
+                result = list(filter(lambda song: bool(re.match('^[A-Za-z ]*$', song[1])), titles))
             case 1:
-                constraint = "title REGEXP '^[A-Za-z0-9. ]*$'"
+                result = list(filter(lambda song: bool(re.match('^[A-Za-z0-9. ]*$', song[1])), titles))
             case 2:
-                constraint = "lt.language = 'en'"
+                result = list(filter(lambda song: song[0] == 'en', titles))
             case 3:
-                constraint = "1 = 1"
+                result = titles
         
-        result = cursor.execute(f"""
-        SELECT s.song_id, lt.title AS title
-        FROM songs s
-        JOIN localized_titles lt ON s.song_id = lt.song_id
-        WHERE {constraint}
-        ORDER BY RAND()
-        LIMIT %s;
-        """,(n,))
+        random.shuffle(result)
+        result = result[:n]
         
         for song_id, title in result:
             self.songs.append(song_id)
