@@ -348,9 +348,9 @@ class Hangman():
         msg.append(f'Viewed: {','.join(self.viewed)}')
         for i, song in enumerate(self.state, 1):
             if self.completed[i-1]:
-                msg.append(f'{i}: ~~{''.join(song)}~~')
+                msg.append(f"{i}: ~~{''.join(song)}~~")
             else:
-                msg.append(f'{i}: {''.join('\\*' if c == None else c for c in song)}')
+                msg.append(f"{i}: {''.join('\\*' if c == None else c for c in song)}")
 
         if self.mode == 1:
             msg.append(f'Life: {self.life}')
