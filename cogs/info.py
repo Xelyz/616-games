@@ -1,20 +1,19 @@
-from typing import Coroutine
 import discord
 from discord.ext import commands
 from discord.ui import View
 from discord import ButtonStyle
-from .utils.query import Query
+from .utils.data import Data
+import re
 
-cursor = Query()
+data = Data()
+songs = data.songs
+alias = data.alias
 
 def ToLowerCase(arg):
     return arg.lower()
 
-def insert(song_id, alias):
-    cursor.execute('''
-INSERT INTO alias (song_id, title)
-VALUES (%s, %s)
-''', (song_id, alias))
+def insert(id, name):
+    alias[name] = id
 
 class ConfirmView(View):
     def __init__(self, action, *params):
@@ -43,37 +42,23 @@ class Info(commands.Cog):
         raise err
     
     @commands.command(name='add-alias', help='lowiro-add-alias "<song>" "<alias>" add alias to a song.\nsong and alias should be in double quote ""')
-    async def add_alias(self, ctx, song: ToLowerCase, alias):
-        result = cursor.execute("""
-            SELECT t.song_id, t.title, 
-            (MATCH(t.title) AGAINST(%s) + 
-            IF(LOWER(t.title) = %s, 100, 0)) AS relevance
-            FROM localized_titles t
-            WHERE MATCH(t.title) AGAINST(%s)
-            ORDER BY relevance DESC;
-            """,(song, song, song))
-        
+    async def add_alias(self, ctx, song:ToLowerCase, name:ToLowerCase):
+        titles = {song['title']: id for id, song in songs.items()}
+        if name in alias or name in map(lambda x: x.lower(), titles.keys()):
+            await ctx.send("Alias already added")
+            return
+
+        result = sorted([title for title in list(titles.keys())+list(alias.keys()) if re.search(song, title.lower())], key=lambda x: len(x))
+
         if result:
             result = result[0]
-            song_id = result[0]
-            title = result[1]
-
-            result = cursor.execute('''
-SELECT title
-FROM alias
-WHERE LOWER(title) = %s
-UNION   
-SELECT title
-FROM localized_titles
-WHERE LOWER(title) = %s
-''', (alias.lower(), alias.lower()))
-            
-            if result:
-                await ctx.send("Alias already added")
+            if result in titles:
+                song_id = titles[result]
             else:
-                view = ConfirmView(insert, song_id, alias)
-                msg = await ctx.send(f"Adding alias **{alias}** to song **{title}**.\n*Timeout in 5 seconds*", view=view)
-                view.msg = msg
+                song_id = alias[result]
+            view = ConfirmView(insert, song_id, name)
+            msg = await ctx.send(f"Adding alias **{alias}** to song **{result}**.\n*Timeout in 5 seconds*", view=view)
+            view.msg = msg
         else:
             await ctx.send("Cannot find the song")
 
@@ -89,44 +74,31 @@ Arcaea is a mobile rhythm game for both experienced and new rhythm game players 
 Challenging trials can be discovered through play, higher difficulties can be unlocked, and a real-time online mode is available to face off against other players.
 ''')
         else:
-            result = cursor.execute("""
-            SELECT t.song_id, t.title, 
-            (MATCH(t.title) AGAINST(%s) + 
-            IF(LOWER(t.title) = %s, 100, 0)) AS relevance, 
-            (MATCH(alias.title) AGAINST(%s) + 
-            IF(LOWER(alias.title) = %s, 100, 0)) AS alias_relevance
-            FROM localized_titles t
-            LEFT JOIN alias ON t.song_id = alias.song_id
-            WHERE MATCH(t.title) AGAINST(%s) OR MATCH(alias.title) AGAINST(%s)
-            ORDER BY GREATEST(relevance, alias_relevance) DESC;
-            """,(song, song, song, song, song, song))
+            titles = {song['title']: id for id, song in songs.items()}
+            result = sorted([title for title in list(titles.keys())+list(alias.keys()) if re.search(song, title.lower())], key=lambda x: len(x))
 
             if result:
                 result = result[0]
-                song_id = result[0]
-                title = result[1]
-                url, id, artist, bpm, set_name, side, version = cursor.execute("""
-                SELECT url, id, artist, bpm, set_name, side, version
-                FROM songs 
-                WHERE song_id = %s;
-                """,(song_id,))[0]
+                if result in titles:
+                    song_id = titles[result]
+                else:
+                    song_id = alias[result]
+                info = songs[song_id]
+                jacket = info.get('jacket')
+                name = info.get('name')
+                artist = info.get('artist')
+                bpm = info.get('bpm')
+                set = info.get('set')
+                side = info.get('side')
+                version = info.get('version')
 
-                difficulties = cursor.execute("""
-                SELECT rating_class, rating, chart_constant, refer_to
-                FROM difficulties 
-                WHERE song_id = %s;
-                """,(song_id,))
+                difficulties = info.get('difficulties')
 
                 display = []
-                for rating_class, rating, chart_constant, refer_to in difficulties:
-                    if refer_to:
-                        res = cursor.execute("""
-                        SELECT rating_class, rating, chart_constant
-                        FROM difficulties
-                        WHERE song_id = %s AND rating_class = %s;
-                        """,(refer_to, rating_class))
-                        if res:
-                            rating_class, rating, chart_constant = res[0]
+                for diff in difficulties:
+                    rating_class = diff.get('rating_class')
+                    rating = diff.get('rating')
+                    chart_constant = diff.get('chart_constant')
 
                     match rating_class:
                         case 0:
@@ -141,9 +113,9 @@ Challenging trials can be discovered through play, higher difficulties can be un
                             cls = 'ETR'
                     
                     plus = '+' if chart_constant - int(chart_constant) >= 0.7 else ''
-                    const = f' ({chart_constant})' if chart_constant >= 9.0 else ''
+                    const = f' ({chart_constant})' if chart_constant >= 8.0 else ''
 
-                    display.append(f'[{cls}](https://www.youtube.com/results?search_query=arcaea+{id}+{cls}): {rating}{plus}{const}')
+                    display.append(f'[{cls}](https://www.youtube.com/results?search_query=arcaea+{name}+{cls}): {rating}{plus}{const}')
 
                 display = ' / '.join(display)
 
@@ -158,7 +130,7 @@ Challenging trials can be discovered through play, higher difficulties can be un
                     color = discord.Color.lighter_grey()
 
                 embed = discord.Embed(
-                    title=title,
+                    title=result,
                     color=color  # You can change the color as needed
                 )
                 embed.add_field(name='Artist: ', value=artist, inline=True)
@@ -167,7 +139,7 @@ Challenging trials can be discovered through play, higher difficulties can be un
                 embed.add_field(name='', value=f'**Side:** {side}', inline=False)
                 embed.add_field(name='Level', value=display, inline=False)
 
-                embed.set_thumbnail(url=url)
+                embed.set_thumbnail(url=jacket)
 
                 await ctx.send(embed=embed)
             else:

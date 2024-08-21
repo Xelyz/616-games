@@ -5,3 +5,4 @@ discord.log
 .env
 test.py
 resources
+*.pkl
