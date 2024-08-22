@@ -6,11 +6,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
+prefix = 'dev-' if os.getenv('DEV') else 'lowiro-'
 
 intents = discord.Intents.default()
 intents.message_content = True
 
-bot = commands.Bot(command_prefix='lowiro-', intents=intents)
+bot = commands.Bot(command_prefix=prefix, intents=intents)
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 cog_directory = os.path.join(dir_path, 'cogs')
