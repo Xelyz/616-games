@@ -16736,27 +16736,27 @@
         "version": "5.10",
         "difficulties": [
             {
-                "ratingClass": 0,
-                "chartDesigner": "Dec18",
-                "jacketDesigner": "\u552f\u838e",
+                "rating_class": 0,
+                "chart_designer": "Dec18",
+                "jacket_designer": "\u552f\u838e",
                 "rating": 3
             },
             {
-                "ratingClass": 1,
-                "chartDesigner": "Dec18",
-                "jacketDesigner": "\u552f\u838e",
+                "rating_class": 1,
+                "chart_designer": "Dec18",
+                "jacket_designer": "\u552f\u838e",
                 "rating": 6
             },
             {
-                "ratingClass": 2,
-                "chartDesigner": "Dec18",
-                "jacketDesigner": "\u552f\u838e",
+                "rating_class": 2,
+                "chart_designer": "Dec18",
+                "jacket_designer": "\u552f\u838e",
                 "rating": 8
             },
             {
-                "ratingClass": 4,
-                "chartDesigner": "Dec18",
-                "jacketDesigner": "\u552f\u838e",
+                "rating_class": 4,
+                "chart_designer": "Dec18",
+                "jacket_designer": "\u552f\u838e",
                 "rating": 9
             }
         ]
@@ -16778,27 +16778,27 @@
         "version": "5.10",
         "difficulties": [
             {
-                "ratingClass": 0,
-                "chartDesigner": "antymis",
-                "jacketDesigner": "\u5915\u897f",
+                "rating_class": 0,
+                "chart_designer": "antymis",
+                "jacket_designer": "\u5915\u897f",
                 "rating": 2
             },
             {
-                "ratingClass": 1,
-                "chartDesigner": "antymis",
-                "jacketDesigner": "\u5915\u897f",
+                "rating_class": 1,
+                "chart_designer": "antymis",
+                "jacket_designer": "\u5915\u897f",
                 "rating": 5
             },
             {
-                "ratingClass": 2,
-                "chartDesigner": "antymis",
-                "jacketDesigner": "\u5915\u897f",
+                "rating_class": 2,
+                "chart_designer": "antymis",
+                "jacket_designer": "\u5915\u897f",
                 "rating": 8
             },
             {
-                "ratingClass": 4,
-                "chartDesigner": "antymis",
-                "jacketDesigner": "\u5915\u897f",
+                "rating_class": 4,
+                "chart_designer": "antymis",
+                "jacket_designer": "\u5915\u897f",
                 "rating": 9
             }
         ]
@@ -16820,27 +16820,27 @@
         "version": "5.10",
         "difficulties": [
             {
-                "ratingClass": 0,
-                "chartDesigner": "NITRO",
-                "jacketDesigner": "\u708e\u7375",
+                "rating_class": 0,
+                "chart_designer": "NITRO",
+                "jacket_designer": "\u708e\u7375",
                 "rating": 3
             },
             {
-                "ratingClass": 1,
-                "chartDesigner": "NITRO",
-                "jacketDesigner": "\u708e\u7375",
+                "rating_class": 1,
+                "chart_designer": "NITRO",
+                "jacket_designer": "\u708e\u7375",
                 "rating": 6
             },
             {
-                "ratingClass": 2,
-                "chartDesigner": "NITRO",
-                "jacketDesigner": "\u708e\u7375",
+                "rating_class": 2,
+                "chart_designer": "NITRO",
+                "jacket_designer": "\u708e\u7375",
                 "rating": 8
             },
             {
-                "ratingClass": 4,
-                "chartDesigner": "NITRO",
-                "jacketDesigner": "\u708e\u7375",
+                "rating_class": 4,
+                "chart_designer": "NITRO",
+                "jacket_designer": "\u708e\u7375",
                 "rating": 10
             }
         ]
@@ -16862,27 +16862,27 @@
         "version": "5.10",
         "difficulties": [
             {
-                "ratingClass": 0,
-                "chartDesigner": "\u2191\u00e9n\u2193",
-                "jacketDesigner": "Mechari",
+                "rating_class": 0,
+                "chart_designer": "\u2191\u00e9n\u2193",
+                "jacket_designer": "Mechari",
                 "rating": 3
             },
             {
-                "ratingClass": 1,
-                "chartDesigner": "\u2191\u00e9n\u2193",
-                "jacketDesigner": "Mechari",
+                "rating_class": 1,
+                "chart_designer": "\u2191\u00e9n\u2193",
+                "jacket_designer": "Mechari",
                 "rating": 7
             },
             {
-                "ratingClass": 2,
-                "chartDesigner": "\u2191\u00e9n\u2193",
-                "jacketDesigner": "Mechari",
+                "rating_class": 2,
+                "chart_designer": "\u2191\u00e9n\u2193",
+                "jacket_designer": "Mechari",
                 "rating": 9
             },
             {
-                "ratingClass": 4,
-                "chartDesigner": "\u8056\u8f2a\u2193\u2191\u591c\u6d6a",
-                "jacketDesigner": "Mechari",
+                "rating_class": 4,
+                "chart_designer": "\u8056\u8f2a\u2193\u2191\u591c\u6d6a",
+                "jacket_designer": "Mechari",
                 "rating": 10
             }
         ]
@@ -16904,21 +16904,21 @@
         "version": "5.10",
         "difficulties": [
             {
-                "ratingClass": 0,
-                "chartDesigner": "\u7d76\u6ec5",
-                "jacketDesigner": "noel",
+                "rating_class": 0,
+                "chart_designer": "\u7d76\u6ec5",
+                "jacket_designer": "noel",
                 "rating": 4
             },
             {
-                "ratingClass": 1,
-                "chartDesigner": "\u7d76\u6ec5",
-                "jacketDesigner": "noel",
+                "rating_class": 1,
+                "chart_designer": "\u7d76\u6ec5",
+                "jacket_designer": "noel",
                 "rating": 7
             },
             {
-                "ratingClass": 2,
-                "chartDesigner": "\u7d76\u6ec5",
-                "jacketDesigner": "noel",
+                "rating_class": 2,
+                "chart_designer": "\u7d76\u6ec5",
+                "jacket_designer": "noel",
                 "rating": 10
             }
         ]
@@ -16939,21 +16939,21 @@
         "version": "5.10",
         "difficulties": [
             {
-                "ratingClass": 0,
-                "chartDesigner": "Volution",
-                "jacketDesigner": "\u6708\u88cf",
+                "rating_class": 0,
+                "chart_designer": "Volution",
+                "jacket_designer": "\u6708\u88cf",
                 "rating": 5
             },
             {
-                "ratingClass": 1,
-                "chartDesigner": "Volution CCCLX",
-                "jacketDesigner": "\u6708\u88cf",
+                "rating_class": 1,
+                "chart_designer": "Volution CCCLX",
+                "jacket_designer": "\u6708\u88cf",
                 "rating": 8
             },
             {
-                "ratingClass": 2,
-                "chartDesigner": "Volution IV",
-                "jacketDesigner": "\u6708\u88cf",
+                "rating_class": 2,
+                "chart_designer": "Volution IV",
+                "jacket_designer": "\u6708\u88cf",
                 "rating": 10
             }
         ]
