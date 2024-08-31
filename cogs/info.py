@@ -52,7 +52,7 @@ class Info(commands.Cog):
     
     @commands.command(name='add-alias', help='lowiro-add-alias "<song>" "<alias>" add alias to a song.\nsong and alias should be in double quote ""')
     async def add_alias(self, ctx, song:ToLowerCase, name:ToLowerCase):
-        titles = {song['title']: id for id, song in songs.items()}
+        titles = {song['title']: song['id'] for song in songs}
         if name in alias or name in map(lambda x: x.lower(), titles.keys()):
             await ctx.send("Alias already added")
             return
@@ -83,7 +83,7 @@ Arcaea is a mobile rhythm game for both experienced and new rhythm game players 
 Challenging trials can be discovered through play, higher difficulties can be unlocked, and a real-time online mode is available to face off against other players.
 ''')
         else:
-            titles = {song['title']: id for id, song in songs.items()}
+            titles = {song['title']: song['id'] for song in songs}
             result = sorted([title for title in list(titles.keys())+list(alias.keys()) if re.search(song, title.lower())], key=lambda x: len(x))
 
             if result:
