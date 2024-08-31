@@ -7,6 +7,7 @@ import re
 
 data = Data()
 songs = data.songs
+cc = data.cc
 alias = data.alias
 
 def ToLowerCase(arg):
@@ -40,6 +41,14 @@ class Info(commands.Cog):
             return
         await ctx.send(err)
         raise err
+    
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def reloadInfo(self, ctx):
+        data.reload()
+        global songs, cc
+        songs = data.songs
+        cc = data.cc
     
     @commands.command(name='add-alias', help='lowiro-add-alias "<song>" "<alias>" add alias to a song.\nsong and alias should be in double quote ""')
     async def add_alias(self, ctx, song:ToLowerCase, name:ToLowerCase):
@@ -98,7 +107,7 @@ Challenging trials can be discovered through play, higher difficulties can be un
                 for diff in difficulties:
                     rating_class = diff.get('rating_class')
                     rating = diff.get('rating')
-                    chart_constant = diff.get('chart_constant')
+                    chart_constant = cc.get(name)[rating_class].get('constant')
 
                     if rating_class == 0:
                         cls = 'PST'

@@ -733,7 +733,7 @@
             },
             {
                 "rating_class": 3,
-                "refer_to": 409,
+                "refer_to": 10409,
                 "chart_constant": 11.0
             }
         ],
@@ -1786,7 +1786,7 @@
             },
             {
                 "rating_class": 3,
-                "refer_to": 410,
+                "refer_to": 10410,
                 "chart_constant": 9.9
             }
         ],
@@ -2487,7 +2487,7 @@
             },
             {
                 "rating_class": 3,
-                "refer_to": 411,
+                "refer_to": 10411,
                 "chart_constant": 10.0
             }
         ],
@@ -2972,7 +2972,7 @@
             },
             {
                 "rating_class": 3,
-                "refer_to": 412,
+                "refer_to": 10412,
                 "chart_constant": 10.4
             }
         ],
@@ -3857,7 +3857,7 @@
             },
             {
                 "rating_class": 3,
-                "refer_to": 413,
+                "refer_to": 10413,
                 "chart_constant": 10.5
             }
         ],
@@ -4902,7 +4902,7 @@
             },
             {
                 "rating_class": 3,
-                "refer_to": 414,
+                "refer_to": 10414,
                 "chart_constant": 11.1
             }
         ],
@@ -11661,7 +11661,7 @@
                 "rating_class": 3,
                 "chart_designer": "",
                 "jacket_designer": "",
-                "refer_to": 415,
+                "refer_to": 10415,
                 "chart_constant": 9.6
             }
         ],
@@ -16666,7 +16666,7 @@
         "title": "Judgement"
     },
     {
-        "id": 407,
+        "id": 10407,
         "name": "alterego",
         "artist": "Yuta Imai vs Qlarabelle",
         "bpm": "195",
@@ -16713,7 +16713,246 @@
         "title": "ALTER EGO"
     },
     {
-        "id": 409,
+        "id": 407,
+        "name": "epitaxy",
+        "language": "en",
+        "title": "epitaxy",
+        "artist": "Camellia",
+        "bpm": "183",
+        "bpm_base": 183,
+        "set": "extend_3",
+        "purchase": "extend_3",
+        "side": 0,
+        "bg": "rotaeno_light",
+        "bg_inverse": "rotaeno_conflict",
+        "world_unlock": true,
+        "version": "5.10",
+        "difficulties": [
+            {
+                "ratingClass": 0,
+                "chartDesigner": "Dec18",
+                "jacketDesigner": "唯莎",
+                "rating": 3
+            },
+            {
+                "ratingClass": 1,
+                "chartDesigner": "Dec18",
+                "jacketDesigner": "唯莎",
+                "rating": 6
+            },
+            {
+                "ratingClass": 2,
+                "chartDesigner": "Dec18",
+                "jacketDesigner": "唯莎",
+                "rating": 8
+            },
+            {
+                "ratingClass": 4,
+                "chartDesigner": "Dec18",
+                "jacketDesigner": "唯莎",
+                "rating": 9
+            }
+        ]
+    },
+    {
+        "idx": 408,
+        "id": "waltzforlorelei",
+        "title": "Waltz for Lorelei",
+        "language": "en",
+        "artist": "Sobrem \u0026 庭師",
+        "bpm": "220",
+        "bpm_base": 220,
+        "set": "rotaeno",
+        "purchase": "rotaeno",
+        "side": 0,
+        "bg": "rotaeno_light",
+        "bg_inverse": "rotaeno_conflict",
+        "world_unlock": false,
+        "version": "5.10",
+        "difficulties": [
+            {
+                "ratingClass": 0,
+                "chartDesigner": "antymis",
+                "jacketDesigner": "夕西",
+                "rating": 2
+            },
+            {
+                "ratingClass": 1,
+                "chartDesigner": "antymis",
+                "jacketDesigner": "夕西",
+                "rating": 5
+            },
+            {
+                "ratingClass": 2,
+                "chartDesigner": "antymis",
+                "jacketDesigner": "夕西",
+                "rating": 8
+            },
+            {
+                "ratingClass": 4,
+                "chartDesigner": "antymis",
+                "jacketDesigner": "夕西",
+                "rating": 9
+            }
+        ]
+    },
+    {
+        "idx": 409,
+        "id": "dualdoom",
+        "title": "Dual Doom Deathmatch",
+        "language": "en",
+        "artist": "Kobaryo vs HyuN",
+        "bpm": "222",
+        "bpm_base": 222,
+        "set": "rotaeno",
+        "purchase": "rotaeno",
+        "side": 1,
+        "bg": "rotaeno_conflict",
+        "bg_inverse": "rotaeno_light",
+        "world_unlock": false,
+        "version": "5.10",
+        "difficulties": [
+            {
+                "ratingClass": 0,
+                "chartDesigner": "NITRO",
+                "jacketDesigner": "炎獵",
+                "rating": 3
+            },
+            {
+                "ratingClass": 1,
+                "chartDesigner": "NITRO",
+                "jacketDesigner": "炎獵",
+                "rating": 6
+            },
+            {
+                "ratingClass": 2,
+                "chartDesigner": "NITRO",
+                "jacketDesigner": "炎獵",
+                "rating": 8
+            },
+            {
+                "ratingClass": 4,
+                "chartDesigner": "NITRO",
+                "jacketDesigner": "炎獵",
+                "rating": 10
+            }
+        ]
+    },
+    {
+        "idx": 410,
+        "id": "invertedworld",
+        "title": "Inverted World",
+        "language": "en",
+        "artist": "ARForest",
+        "bpm": "180",
+        "bpm_base": 180,
+        "set": "rotaeno",
+        "purchase": "rotaeno",
+        "side": 0,
+        "bg": "rotaeno_light",
+        "bg_inverse": "rotaeno_conflict",
+        "world_unlock": false,
+        "version": "5.10",
+        "difficulties": [
+            {
+                "ratingClass": 0,
+                "chartDesigner": "↑én↓",
+                "jacketDesigner": "Mechari",
+                "rating": 3
+            },
+            {
+                "ratingClass": 1,
+                "chartDesigner": "↑én↓",
+                "jacketDesigner": "Mechari",
+                "rating": 7
+            },
+            {
+                "ratingClass": 2,
+                "chartDesigner": "↑én↓",
+                "jacketDesigner": "Mechari",
+                "rating": 9
+            },
+            {
+                "ratingClass": 4,
+                "chartDesigner": "聖輪↓↑夜浪",
+                "jacketDesigner": "Mechari",
+                "rating": 10
+            }
+        ]
+    },
+    {
+        "idx": 411,
+        "id": "mvurbd",
+        "title": "MVURBD",
+        "language": "en",
+        "artist": "ETIA.",
+        "bpm": "175",
+        "bpm_base": 175,
+        "set": "rotaeno",
+        "purchase": "rotaeno",
+        "side": 1,
+        "bg": "rotaeno_conflict",
+        "bg_inverse": "rotaeno_light",
+        "world_unlock": false,
+        "version": "5.10",
+        "difficulties": [
+            {
+                "ratingClass": 0,
+                "chartDesigner": "絶滅",
+                "jacketDesigner": "noel",
+                "rating": 4
+            },
+            {
+                "ratingClass": 1,
+                "chartDesigner": "絶滅",
+                "jacketDesigner": "noel",
+                "rating": 7
+            },
+            {
+                "ratingClass": 2,
+                "chartDesigner": "絶滅",
+                "jacketDesigner": "noel",
+                "rating": 10
+            }
+        ]
+    },
+    {
+        "idx": 412,
+        "id": "vulcanus",
+        "title" :"Vulcānus",
+        "language": "en",
+        "artist": "Team Grimoire vs Aoi",
+        "bpm": "212",
+        "bpm_base": 212,
+        "set": "rotaeno",
+        "purchase": "rotaeno",
+        "side": 0,
+        "bg": "vulcanus",
+        "world_unlock": false,
+        "version": "5.10",
+        "difficulties": [
+            {
+                "ratingClass": 0,
+                "chartDesigner": "Volution",
+                "jacketDesigner": "月裏",
+                "rating": 5
+            },
+            {
+                "ratingClass": 1,
+                "chartDesigner": "Volution CCCLX",
+                "jacketDesigner": "月裏",
+                "rating": 8
+            },
+            {
+                "ratingClass": 2,
+                "chartDesigner": "Volution IV",
+                "jacketDesigner": "月裏",
+                "rating": 10
+            }
+        ]
+    },
+    {
+        "id": 10409,
         "name": "pragmatism_byd",
         "artist": "Laur",
         "bpm": "174",
@@ -16740,7 +16979,7 @@
         "title": "PRAGMATISM -RESURRECTION-"
     },
     {
-        "id": 410,
+        "id": 10410,
         "name": "ignotusafterburn",
         "artist": "Arcaea Sound Team",
         "bpm": "170",
@@ -16767,7 +17006,7 @@
         "title": "Ignotus Afterburn"
     },
     {
-        "id": 411,
+        "id": 10411,
         "name": "redandblueandgreen",
         "artist": "fn(ArcaeaSoundTeam)",
         "bpm": "160",
@@ -16794,7 +17033,7 @@
         "title": "Red and Blue and Green"
     },
     {
-        "id": 412,
+        "id": 10412,
         "name": "singularityvvvip",
         "artist": "Arcaea Sound Team against. ETIA.",
         "bpm": "175",
@@ -16821,7 +17060,7 @@
         "title": "Singularity VVVIP"
     },
     {
-        "id": 413,
+        "id": 10413,
         "name": "overdead",
         "artist": "fn",
         "bpm": "500",
@@ -16848,7 +17087,7 @@
         "title": "overdead."
     },
     {
-        "id": 414,
+        "id": 10414,
         "name": "viciousheroism_byd",
         "artist": "Kobaryo",
         "bpm": "271",
@@ -16875,7 +17114,7 @@
         "title": "Vicious [ANTi] Heroism"
     },
     {
-        "id": 415,
+        "id": 10415,
         "name": "last_byd",
         "artist": "onoken",
         "bpm": "175",
