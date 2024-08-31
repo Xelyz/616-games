@@ -16762,8 +16762,8 @@
         ]
     },
     "waltzforlorelei": {
-        "idx": 408,
-        "id": "waltzforlorelei",
+        "id": 408,
+        "name": "waltzforlorelei",
         "title": "Waltz for Lorelei",
         "language": "en",
         "artist": "Sobrem & \u5ead\u5e2b",
@@ -16804,8 +16804,8 @@
         ]
     },
     "dualdoom": {
-        "idx": 409,
-        "id": "dualdoom",
+        "id": 409,
+        "name": "dualdoom",
         "title": "Dual Doom Deathmatch",
         "language": "en",
         "artist": "Kobaryo vs HyuN",
@@ -16846,8 +16846,8 @@
         ]
     },
     "invertedworld": {
-        "idx": 410,
-        "id": "invertedworld",
+        "id": 410,
+        "name": "invertedworld",
         "title": "Inverted World",
         "language": "en",
         "artist": "ARForest",
@@ -16888,8 +16888,8 @@
         ]
     },
     "mvurbd": {
-        "idx": 411,
-        "id": "mvurbd",
+        "id": 411,
+        "name": "mvurbd",
         "title": "MVURBD",
         "language": "en",
         "artist": "ETIA.",
@@ -16924,8 +16924,8 @@
         ]
     },
     "vulcanus": {
-        "idx": 412,
-        "id": "vulcanus",
+        "id": 412,
+        "name": "vulcanus",
         "title": "Vulc\u0101nus",
         "language": "en",
         "artist": "Team Grimoire vs Aoi",
