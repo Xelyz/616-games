@@ -50,6 +50,12 @@ class Info(commands.Cog):
         songs = data.songs
         cc = data.cc
         await ctx.send('reloaded')
+
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def save(self, ctx):
+        data.save()
+        await ctx.send('Saved!')
     
     @commands.command(name='add-alias', help='lowiro-add-alias "<song>" "<alias>" add alias to a song.\nsong and alias should be in double quote ""')
     async def add_alias(self, ctx, song:ToLowerCase, name:ToLowerCase):

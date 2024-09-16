@@ -21,3 +21,7 @@ class Data:
             self.songs = json.load(file)
         with open('cogs/utils/chartConstant.json', 'r') as file:
             self.cc = json.load(file)
+
+    def save(self):
+        with open('cogs/utils/alias.json', 'w') as file:
+            json.dump(self.alias, file)
