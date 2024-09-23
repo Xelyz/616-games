@@ -17146,5 +17146,48 @@
         ],
         "language": "en",
         "title": "Last | Moment"
+    },
+    "413": {
+        "id": 413,
+        "name": "rainofconflict",
+        "title": "Rain of Conflict in a Radiant Abyss",
+        "language": "en",
+        "artist": "ak+q",
+        "bpm": "195",
+        "bpm_base": 195,
+        "set": "single",
+        "purchase": "rainofconflict",
+        "side": 1,
+        "bg": "finale_conflict",
+        "bg_inverse": "finale_light",
+        "world_unlock": false,
+        "version": "5.10",
+        "difficulties": [
+            {
+                "rating_class": 0,
+                "chart_designer": "Nitro “v20170309”",
+                "jacket_designer": "辷",
+                "rating": 5
+            },
+            {
+                "rating_class": 1,
+                "chart_designer": "Nitro “v20170309”",
+                "jacket_designer": "辷",
+                "rating": 7,
+                "rating_plus": true
+            },
+            {
+                "rating_class": 2,
+                "chart_designer": "Nitro “v20170309”",
+                "jacket_designer": "辷",
+                "rating": 9
+            },
+            {
+                "rating_class": 4,
+                "chart_designer": "Nitro meets Toaster “v20170309”",
+                "jacket_designer": "辷",
+                "rating": 10
+            }
+        ]
     }
 }
