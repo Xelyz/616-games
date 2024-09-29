@@ -5315,46 +5315,6 @@
         "language": "en",
         "title": "Dreadnought"
     },
-    "128": {
-        "id": 128,
-        "name": "particlearts",
-        "artist": "Virtual Self",
-        "bpm": "162-175",
-        "bpm_base": 175,
-        "set": "prelude",
-        "purchase": "prelude",
-        "side": 1,
-        "bg": "prelude_conflict",
-        "bg_inverse": "prelude_light",
-        "version": "2.2",
-        "world_unlock": 0,
-        "jacket": "https://arcwiki.mcd.blue/images/c/c8/Songs_particlearts.jpg",
-        "difficulties": [
-            {
-                "rating_class": 0,
-                "chart_designer": "\u5c0f\u6771\u661f",
-                "jacket_designer": "",
-                "rating": 3,
-                "chart_constant": 3.5
-            },
-            {
-                "rating_class": 1,
-                "chart_designer": "\u5c0f\u6771\u661f",
-                "jacket_designer": "",
-                "rating": 6,
-                "chart_constant": 6.0
-            },
-            {
-                "rating_class": 2,
-                "chart_designer": "\u5c0f\u6771\u661f",
-                "jacket_designer": "",
-                "rating": 8,
-                "chart_constant": 8.8
-            }
-        ],
-        "language": "en",
-        "title": "Particle Arts"
-    },
     "129": {
         "id": 129,
         "name": "vindication",
@@ -17186,6 +17146,170 @@
                 "rating_class": 4,
                 "chart_designer": "Nitro meets Toaster “v20170309”",
                 "jacket_designer": "辷",
+                "rating": 10
+            }
+        ]
+    },
+    "414": {
+        "id": 414,
+        "name": "saintorsinner",
+        "artist": "crayvxn",
+        "bpm": "164",
+        "bpm_base": 164,
+        "set": "prelude",
+        "purchase": "prelude",
+        "side": 1,
+        "bg": "prelude_conflict",
+        "bg_inverse": "prelude_light",
+        "version": "5.10",
+        "world_unlock": false,
+        "jacket": "",
+        "language": "en",
+        "title": "Saint or Sinner",
+        "difficulties": [
+            {
+                "rating_class": 0,
+                "chart_designer": "小終点",
+                "jacket_designer": "yawa",
+                "rating": 3
+            },
+            {
+                "rating_class": 1,
+                "chart_designer": "小終点",
+                "jacket_designer": "yawa",
+                "rating": 6
+            },
+            {
+                "rating_class": 2,
+                "chart_designer": "小終点",
+                "jacket_designer": "yawa",
+                "rating": 8,
+                "rating_plus": true
+            }
+        ]
+    },
+    "415": {
+        "id": 415,
+        "name": "hailstone",
+        "artist": "Kazki Misora",
+        "bpm": "180",
+        "bpm_base": 180,
+        "set": "extend_3",
+        "purchase": "extend_3",
+        "side": 0,
+        "bg": "single2_light",
+        "bg_inverse": "single2_conflict",
+        "version": "5.10",
+        "world_unlock": true,
+        "jacket": "",
+        "language": "en",
+        "title": "Hailstone",
+        "difficulties": [
+            {
+                "rating_class": 0,
+                "chart_designer": "raycast",
+                "jacket_designer": "mogami",
+                "rating": 3
+            },
+            {
+                "rating_class": 1,
+                "chart_designer": "raycast",
+                "jacket_designer": "mogami",
+                "rating": 7
+            },
+            {
+                "rating_class": 2,
+                "chart_designer": "raycast",
+                "jacket_designer": "mogami",
+                "rating": 9,
+                "rating_plus": true
+            }
+        ]
+    },
+    "416": {
+        "id": 416,
+        "name": "furetemitai",
+        "artist": "みきとP",
+        "bpm": "155",
+        "bpm_base": 155,
+        "set": "extend_3",
+        "purchase": "extend_3",
+        "side": 0,
+        "bg": "hime_light",
+        "bg_inverse": "hime_conflict",
+        "version": "5.10",
+        "world_unlock": true,
+        "source": "TETOTE CONNECT",
+        "jacket": "",
+        "language": "ja",
+        "title": "フレテミタイ",
+        "difficulties": [
+            {
+                "rating_class": 0,
+                "chart_designer": "nora::neko",
+                "jacket_designer": "",
+                "rating": 2
+            },
+            {
+                "rating_class": 1,
+                "chart_designer": "nora::neko",
+                "jacket_designer": "",
+                "rating": 6
+            },
+            {
+                "rating_class": 2,
+                "chart_designer": "nora::neko",
+                "jacket_designer": "",
+                "rating": 8
+            },
+            {
+                "rating_class": 4,
+                "chart_designer": "nora::neko",
+                "jacket_designer": "",
+                "rating": 9
+            }
+        ]
+    },
+    "417": {
+        "id": 417,
+        "name": "gensounosatellite",
+        "artist": "豚乙女",
+        "bpm": "230",
+        "bpm_base": 230,
+        "set": "single",
+        "purchase": "gensounosatellite",
+        "side": 1,
+        "bg": "vs_conflict",
+        "bg_inverse": "vs_light",
+        "version": "5.10",
+        "world_unlock": false,
+        "jacket": "",
+        "language": "ja",
+        "title": "幻想のサテライト",
+        "difficulties": [
+            {
+                "rating_class": 0,
+                "chart_designer": "Luxance",
+                "jacket_designer": "ランコの姉 (豚乙女)",
+                "rating": 2
+            },
+            {
+                "rating_class": 1,
+                "chart_designer": "Luxance",
+                "jacket_designer": "ランコの姉 (豚乙女)",
+                "rating": 6
+            },
+            {
+                "rating_class": 2,
+                "chart_designer": "Luxance",
+                "jacket_designer": "ランコの姉 (豚乙女)",
+                "rating": 8,
+                "rating_plus": true
+            },
+            {
+                "rating_class": 4,
+                "chart_designer": "Luxance",
+                "jacket_designer": "ランコの姉 (豚乙女)",
                 "rating": 10
             }
         ]

@@ -1904,20 +1904,6 @@
             "old": false
         }
     ],
-    "particlearts": [
-        {
-            "constant": 3.5,
-            "old": false
-        },
-        {
-            "constant": 6,
-            "old": false
-        },
-        {
-            "constant": 8.8,
-            "old": false
-        }
-    ],
     "vindication": [
         {
             "constant": 4,
@@ -4881,7 +4867,7 @@
     ],
     "sacrifice": [
         {
-            "constant": 3,
+            "constant": 3.5,
             "old": false
         },
         {
@@ -6072,6 +6058,72 @@
         null,
         {
             "constant": 10.5,
+            "old": false
+        }
+    ],
+    "saintorsinner": [
+        {
+            "constant": 3,
+            "old": false
+        },
+        {
+            "constant": 6,
+            "old": false
+        },
+        {
+            "constant": 8.8,
+            "old": false
+        }
+    ],
+    "hailstone": [
+        {
+            "constant": 3.5,
+            "old": false
+        },
+        {
+            "constant": 7,
+            "old": false
+        },
+        {
+            "constant": 9.7,
+            "old": false
+        }
+    ],
+    "furetemitai": [
+        {
+            "constant": 2.5,
+            "old": false
+        },
+        {
+            "constant": 6,
+            "old": false
+        },
+        {
+            "constant": 8.4,
+            "old": false
+        },
+        null,
+        {
+            "constant": 9.4,
+            "old": false
+        }
+    ],
+    "gensounosatellite": [
+        {
+            "constant": 2.5,
+            "old": false
+        },
+        {
+            "constant": 6.5,
+            "old": false
+        },
+        {
+            "constant": 8.7,
+            "old": false
+        },
+        null,
+        {
+            "constant": 10.1,
             "old": false
         }
     ]
